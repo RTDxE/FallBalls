@@ -1,15 +1,42 @@
 const app = new PIXI.Application({
     background: "#ddd",
-    resizeTo: window,
+    width: window.innerWidth,
+    height: 1000,
 });
-document.body.appendChild(app.view);
 
-let state = new GameOverContainer();
-app.stage.addChild(state);
+const appContainer = document.getElementById("app-container");
+appContainer.appendChild(app.view);
+
+bundles = { background: null, ui: null, items: [] };
+activeBundle = { background: "default", items: 0 };
+async function loadBundles() {
+    await PIXI.Assets.init({ manifest: "../assets/manifest.json" });
+    PIXI.Assets.backgroundLoadBundle(["background", "ui", "defaultItems"]);
+    bundles.background = await PIXI.Assets.loadBundle("background");
+    bundles.ui = await PIXI.Assets.loadBundle("ui");
+    bundles.items.push(await PIXI.Assets.loadBundle("defaultItems"));
+}
+let state = null;
+loadBundles().then(() => {
+    this.background = PIXI.Sprite.from(
+        bundles.background[activeBundle.background]
+    );
+    this.background.anchor.set(0.5);
+    app.stage.addChild(this.background);
+
+    const blurFilter1 = new PIXI.filters.BlurFilter();
+    blurFilter1.blur = 10;
+    this.background.filters = [blurFilter1];
+
+    state = new MainMenuContainer();
+    app.stage.addChild(state);
+    resize();
+});
 
 let failItem = null;
 
 app.ticker.add((delta) => {
+    if (state == null) return;
     state.update(delta);
     if (failItem != null) {
         failItem.alpha -= delta * 0.05;
@@ -36,10 +63,10 @@ app.stage.startGame = function () {
     app.stage.addChild(state);
 };
 
-app.stage.gameOver = function (item) {
+app.stage.gameOver = function (item, score) {
     app.stage.removeChild(state);
-    state.destroy()
-    state = new GameOverContainer();
+    state.destroy();
+    state = new GameOverContainer(score);
     app.stage.addChild(state);
 
     app.stage.addChild(item);
@@ -48,3 +75,33 @@ app.stage.gameOver = function (item) {
         failItem = item;
     }, 1000);
 };
+
+function resize() {
+    const windowHeight = window.innerHeight;
+    const scale = windowHeight / 1000; // Масштабирование в зависимости от высоты окна браузера
+    app.renderer.resize(window.innerWidth, windowHeight);
+    app.stage.scale.set(scale, scale);
+
+    if (this.background == null) return;
+
+    let h = this.background.height;
+    let w = this.background.width;
+    if (
+        app.screen.height / app.screen.width >
+        this.background.texture.frame.height /
+            this.background.texture.frame.width
+    ) {
+        this.background.height = app.screen.height / app.stage.scale.y;
+        this.background.width *= this.background.height / h;
+    } else {
+        this.background.width = app.screen.width / app.stage.scale.y;
+        this.background.height *= this.background.width / w;
+    }
+
+    this.background.x = app.screen.width / app.stage.scale.x / 2;
+    this.background.y = app.screen.height / app.stage.scale.y / 2;
+}
+
+// Вызовите функцию изменения размера приложения при загрузке страницы и изменении размеров окна браузера
+window.addEventListener("DOMContentLoaded", resize);
+window.addEventListener("resize", resize);

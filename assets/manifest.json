@@ -1,0 +1,59 @@
+{
+    "bundles": [
+        {
+            "name": "background",
+            "assets": [
+                {
+                    "name": "default",
+                    "srcs": "https://png.pngtree.com/background/20230317/original/pngtree-summer-umbrella-beach-background-picture-image_2148607.jpg"
+                }
+            ]
+        },
+        {
+            "name": "defaultItems",
+            "assets": [
+                {
+                    "name": "item1",
+                    "srcs": "./assets/items/default/item1.png"
+                },
+                {
+                    "name": "item2",
+                    "srcs": "./assets/items/default/item2.png"
+                },
+                {
+                    "name": "item3",
+                    "srcs": "./assets/items/default/item3.png"
+                },
+                {
+                    "name": "item4",
+                    "srcs": "./assets/items/default/item4.png"
+                }
+            ]
+        },
+        {
+            "name": "ui",
+            "assets": [
+                {
+                    "name": "logo",
+                    "srcs": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Example_title.svg/1280px-Example_title.svg.png"
+                },
+                {
+                    "name": "buttonYellow",
+                    "srcs": "./assets/ui/default/buttonYellow.png"
+                },
+                {
+                    "name": "buttonBlue",
+                    "srcs": "./assets/ui/default/buttonBlue.png"
+                },
+                {
+                    "name": "buttonRed",
+                    "srcs": "./assets/ui/default/buttonRed.png"
+                },
+                {
+                    "name": "buttonGreen",
+                    "srcs": "./assets/ui/default/buttonGreen.png"
+                }
+            ]
+        }
+    ]
+}

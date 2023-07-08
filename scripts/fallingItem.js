@@ -1,21 +1,25 @@
-class Ball extends PIXI.Sprite {
+class FallingItem extends PIXI.Sprite {
     constructor() {
         super(
-            PIXI.Texture.from(
-                "https://img.icons8.com/?size=128&id=fkDdS2VvGx_2&format=png"
+            new PIXI.Texture(
+                bundles.items[activeBundle.items][
+                    ["item1", "item2", "item3", "item4"].random()
+                ]
             )
         );
 
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
 
-        this.x = getRandomArbitrary(100, app.screen.width - 100);
+        this.x = getRandomArbitrary(
+            64,
+            app.screen.width / app.stage.scale.x - 64
+        );
         this.y = -200;
 
         this.doubler = getRandomArbitrary(0, 1) < 0.1;
         // console.log(this.doubler);
-
-        this.fallSpeed = getRandomArbitrary(1, 4);
+        this.fallSpeed = getRandomArbitrary(2, 8);
         if (this.doubler) {
             this.rotationSpeed = 0.1;
         } else {
@@ -32,7 +36,7 @@ class Ball extends PIXI.Sprite {
     }
 
     createDouble() {
-        let ball1 = new Ball();
+        let ball1 = new FallingItem();
         ball1.x = this.x - 32;
         ball1.y = this.y;
         ball1.doubler = false;
@@ -40,7 +44,7 @@ class Ball extends PIXI.Sprite {
         ball1.pushVelocity.x = -getRandomArbitrary(1, 5);
         ball1.pushVelocity.y = -getRandomArbitrary(3, 10);
 
-        let ball2 = new Ball();
+        let ball2 = new FallingItem();
         ball2.x = this.x + 32;
         ball2.y = this.y;
         ball2.doubler = false;
@@ -53,10 +57,14 @@ class Ball extends PIXI.Sprite {
 
     update(delta) {
         this.x += this.pushVelocity.x * delta;
+        this.x = Math.min(
+            Math.max(this.x, 64),
+            app.screen.width / app.stage.scale.x - 100
+        );
         this.y += this.fallSpeed * delta;
         this.y += this.pushVelocity.y * delta;
-        this.pushVelocity.x -= this.pushVelocity.x * delta / 20;
-        this.pushVelocity.y -= this.pushVelocity.y * delta / 20;
+        this.pushVelocity.x -= (this.pushVelocity.x * delta) / 20;
+        this.pushVelocity.y -= (this.pushVelocity.y * delta) / 20;
         // this.pushVelocity.y = Math.max(this.pushVelocity.y - (this.pushVelocity.y * delta / 10), 0);
         this.rotation += this.rotationSpeed * delta;
     }

@@ -2,27 +2,30 @@ class GameContainer extends PIXI.Container {
     constructor() {
         super();
 
-        this.balls = [];
+        this.items = [];
         for (let index = 0; index < 2; index++) {
-            this.spawnNewBall();
+            this.spawnNewItem();
         }
 
         this.timeout = null;
         this.startIntervalStep = 10;
-        this.intervalSpawnBalls(1000);
+        this.intervalSpawnItems(1000);
+
+        this.score = 0;
+        this.scoreText = new PIXI.Text("Score: 0");
+        this.addChild(this.scoreText);
     }
 
-    spawnNewBall() {
-        let ball = new Ball();
-        this.addChild(ball);
-        this.balls.push(ball);
+    spawnNewItem() {
+        let item = new FallingItem();
+        this.addChild(item);
+        this.items.push(item);
     }
 
-    intervalSpawnBalls(interval) {
-        // console.log(interval);
-        this.spawnNewBall();
+    intervalSpawnItems(interval) {
+        this.spawnNewItem();
         this.timeout = setTimeout(
-            this.intervalSpawnBalls.bind(this),
+            this.intervalSpawnItems.bind(this),
             interval,
             Math.max(interval - this.startIntervalStep, 50)
         );
@@ -30,28 +33,28 @@ class GameContainer extends PIXI.Container {
     }
 
     update(delta) {
-        this.balls.forEach((ball, index) => {
-            ball.update(delta);
-            if (ball.y > app.screen.height - 64) {
-                // this.balls.splice(index, 1);
-                // this.removeChild(ball);
-                app.stage.gameOver(ball);
+        this.items.forEach((item, index) => {
+            item.update(delta);
+            if (item.y > app.screen.height / app.stage.scale.y - 64) {
+                app.stage.gameOver(item, this.score);
                 return;
-            } else if (ball.clicked) {
-                if (ball.doubler) {
-                    ball.createDouble().forEach((ballD) => {
-                        this.addChild(ballD);
-                        this.balls.push(ballD);
+            } else if (item.clicked) {
+                if (item.doubler) {
+                    item.createDouble().forEach((itemD) => {
+                        this.addChild(itemD);
+                        this.items.push(itemD);
                     });
                 }
-                this.balls.splice(index, 1);
-                this.removeChild(ball);
+                this.items.splice(index, 1);
+                this.removeChild(item);
+                this.score += 1;
+                this.scoreText.text = `Score: ${this.score}`;
             }
         });
     }
 
     destroy() {
         clearTimeout(this.timeout);
-        this.balls = [];
+        this.items = [];
     }
 }
