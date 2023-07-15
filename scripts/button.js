@@ -23,12 +23,13 @@ class Button extends PIXI.Container {
         this.background.eventMode = "dynamic";
         this.background.cursor = "pointer";
         this.background.anchor.set(0.5);
-        this.background.on("pointerup", (event) =>
-            this.emit("pointerup", event)
+        this.background.on("pointerdown", (event) =>
+            this.emit("pointerdown", event)
         );
+        this.background.on("pointerover", () => currentObj.setObj(this)).on("pointerout", () => currentObj.delObj(this));
         this.addChild(this.background);
 
-        this.text = new PIXI.Text(text);
+        this.text = new PIXI.Text(text, fontStyle.default);
         this.addChild(this.text);
         this.text.anchor.set(0.5);
 

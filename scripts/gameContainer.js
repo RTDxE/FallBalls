@@ -2,6 +2,8 @@ class GameContainer extends PIXI.Container {
     constructor() {
         super();
 
+        const scoreBgTexture = new PIXI.Texture(bundles.ui.scoreBg);
+
         this.items = [];
         for (let index = 0; index < 2; index++) {
             this.spawnNewItem();
@@ -12,8 +14,12 @@ class GameContainer extends PIXI.Container {
         this.intervalSpawnItems(1000);
 
         this.score = 0;
-        this.scoreText = new PIXI.Text("Score: 0");
-        this.addChild(this.scoreText);
+        this.scoreBg = new PIXI.Sprite(scoreBgTexture);
+        this.scoreBg.y = 0;
+        this.addChild(this.scoreBg);
+        this.scoreText = new PIXI.Text("Score: 0", fontStyle.default);
+        this.scoreText.anchor.set(-0.25);
+        this.scoreBg.addChild(this.scoreText);
     }
 
     spawnNewItem() {

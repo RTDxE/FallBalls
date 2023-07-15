@@ -15,7 +15,7 @@ class MainMenuContainer extends PIXI.Container {
 
         this.startButton = new Button("Start");
         this.startButton.y = 200;
-        this.startButton.on("pointerup", app.stage.startGame);
+        this.startButton.on("pointerdown", app.stage.startGame);
         this.menu.addChild(this.startButton);
     }
 

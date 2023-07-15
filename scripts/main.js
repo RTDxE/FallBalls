@@ -7,6 +7,11 @@ const app = new PIXI.Application({
 const appContainer = document.getElementById("app-container");
 appContainer.appendChild(app.view);
 
+app.renderer.events.cursorStyles.default =
+    "url('../assets/ui/default/cursor.png') 32 32,auto";
+app.renderer.events.cursorStyles.pointer =
+    "url('../assets/ui/default/cursorPointer.png') 32 32,pointer";
+
 bundles = { background: null, ui: null, items: [] };
 activeBundle = { background: "default", items: 0 };
 async function loadBundles() {
@@ -33,6 +38,32 @@ loadBundles().then(() => {
     resize();
 });
 
+// Добавление события на нажатие клавиши
+document.addEventListener("keydown", onKeyDown);
+
+function onKeyDown(event) {
+    if (event.code == "KeyZ") {
+        if (currentObj.currentObject != null) {
+            console.log("asas");
+            currentObj.currentObject.emit("pointerdown");
+        }
+    }
+}
+
+let currentObj = {
+    currentObject: null,
+    setObj: function (object) {
+        if (object == this.currentObject) return;
+        this.currentObject = object;
+    },
+    delObj: function (object) {
+        if (this.currentObject != object) {
+            return;
+        }
+        this.currentObject = null;
+    },
+};
+
 let failItem = null;
 
 app.ticker.add((delta) => {
@@ -54,7 +85,9 @@ app.ticker.add((delta) => {
 app.stage.goMainMenu = function () {
     app.stage.removeChild(state);
     state = new MainMenuContainer();
-    app.stage.addChild(state);
+    setTimeout(() => {
+        app.stage.addChild(state);
+    }, 1);
 };
 
 app.stage.startGame = function () {
@@ -67,10 +100,11 @@ app.stage.gameOver = function (item, score) {
     app.stage.removeChild(state);
     state.destroy();
     state = new GameOverContainer(score);
-    app.stage.addChild(state);
+    setTimeout(() => {
+        app.stage.addChild(state);
 
-    app.stage.addChild(item);
-
+        app.stage.addChild(item);
+    }, 1);
     setTimeout(() => {
         failItem = item;
     }, 1000);
