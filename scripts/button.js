@@ -32,8 +32,5 @@ class Button extends PIXI.Container {
         this.text = new PIXI.Text(text, fontStyle.default);
         this.addChild(this.text);
         this.text.anchor.set(0.5);
-
-        // this.alpha = new PIXI.filters.AlphaFilter(1);
-        // this.filters = [this.alpha];
     }
 }

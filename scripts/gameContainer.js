@@ -25,7 +25,14 @@ class GameContainer extends PIXI.Container {
     spawnNewItem() {
         let item = null;
         if (getRandomArbitrary(0, 1) < 0.1) {
-            item = new DoubleFallingItem();
+            let itemVariant = getRandomArbitrary(0, 1);
+            if (itemVariant < 0.1) {
+                item = new AreaDestroyFallingItem();
+            } else if (itemVariant < 0.2) {
+                item = new FullDestroyFallingItem();
+            } else {
+                item = new DoubleFallingItem();
+            }
         } else {
             item = new FallingItem();
         }
@@ -58,6 +65,21 @@ class GameContainer extends PIXI.Container {
                     item.createDouble().forEach((itemD) => {
                         this.addChild(itemD);
                         this.items.push(itemD);
+                    });
+                } else if (item instanceof AreaDestroyFallingItem) {
+                    this.items.forEach((itemD) => {
+                        if (
+                            distance(item.x, item.y, itemD.x, itemD.y) <=
+                            item.distance
+                        ) {
+                            itemD.clicked = true;
+                        }
+                    });
+                } else if (item instanceof FullDestroyFallingItem) {
+                    this.items.forEach((itemD) => {
+                        if (itemD.y > -32) {
+                            itemD.clicked = true;
+                        }
                     });
                 }
                 this.items.splice(index, 1);

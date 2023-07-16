@@ -19,6 +19,15 @@
             ]
         },
         {
+            "name": "misc",
+            "assets": [
+                {
+                    "name": "area",
+                    "srcs": "./assets/misc/area.png"
+                }
+            ]
+        },
+        {
             "name": "defaultItems",
             "assets": [
                 {

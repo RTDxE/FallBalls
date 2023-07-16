@@ -16,12 +16,12 @@ bundles = { background: null, ui: null, items: [] };
 activeBundle = { background: "default", items: 0 };
 async function loadBundles() {
     await PIXI.Assets.init({ manifest: "./assets/manifest.json" });
-    PIXI.Assets.backgroundLoadBundle(["background", "ui", "defaultItems", "fonts"]);
+    PIXI.Assets.backgroundLoadBundle(["background", "ui", "defaultItems", "fonts", "misc"]);
     bundles.background = await PIXI.Assets.loadBundle("background");
     bundles.ui = await PIXI.Assets.loadBundle("ui");
     bundles.items.push(await PIXI.Assets.loadBundle("defaultItems"));
     bundles.fonts = await PIXI.Assets.loadBundle("fonts");
-    console.log(bundles.fonts);
+    bundles.misc = await PIXI.Assets.loadBundle("misc");
 }
 let state = null;
 loadBundles().then(() => {
@@ -47,7 +47,6 @@ function onKeyDown(event) {
     if (event.repeat) return;
     if (event.code == "KeyZ" || event.code == "KeyX") {
         if (currentObj.currentObject != null) {
-            console.log("asas");
             currentObj.currentObject.emit("pointerdown");
         }
     }
