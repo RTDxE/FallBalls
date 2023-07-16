@@ -10,6 +10,15 @@
             ]
         },
         {
+            "name": "fonts",
+            "assets": [
+                {
+                    "name": "Neucha",
+                    "srcs": "./assets/fonts/Neucha-Regular.ttf"
+                }
+            ]
+        },
+        {
             "name": "defaultItems",
             "assets": [
                 {
@@ -35,7 +44,7 @@
             "assets": [
                 {
                     "name": "logo",
-                    "srcs": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Example_title.svg/1280px-Example_title.svg.png"
+                    "srcs": "./assets/ui/logo.png"
                 },
                 {
                     "name": "popup",

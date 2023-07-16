@@ -8,18 +8,20 @@ const appContainer = document.getElementById("app-container");
 appContainer.appendChild(app.view);
 
 app.renderer.events.cursorStyles.default =
-    "url('../assets/ui/default/cursor.png') 32 32,auto";
+    "url('./assets/ui/default/cursor.png') 32 32,auto";
 app.renderer.events.cursorStyles.pointer =
-    "url('../assets/ui/default/cursorPointer.png') 32 32,pointer";
+    "url('./assets/ui/default/cursorPointer.png') 32 32,pointer";
 
 bundles = { background: null, ui: null, items: [] };
 activeBundle = { background: "default", items: 0 };
 async function loadBundles() {
-    await PIXI.Assets.init({ manifest: "../assets/manifest.json" });
-    PIXI.Assets.backgroundLoadBundle(["background", "ui", "defaultItems"]);
+    await PIXI.Assets.init({ manifest: "./assets/manifest.json" });
+    PIXI.Assets.backgroundLoadBundle(["background", "ui", "defaultItems", "fonts"]);
     bundles.background = await PIXI.Assets.loadBundle("background");
     bundles.ui = await PIXI.Assets.loadBundle("ui");
     bundles.items.push(await PIXI.Assets.loadBundle("defaultItems"));
+    bundles.fonts = await PIXI.Assets.loadBundle("fonts");
+    console.log(bundles.fonts);
 }
 let state = null;
 loadBundles().then(() => {

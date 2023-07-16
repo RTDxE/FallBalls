@@ -9,9 +9,9 @@ class GameContainer extends PIXI.Container {
             this.spawnNewItem();
         }
 
-        this.timeout = null;
         this.startIntervalStep = 10;
-        this.intervalSpawnItems(1000);
+        this.currentSpawnInterval = 1000;
+        this.spawnTime = 0;
 
         this.score = 0;
         this.scoreBg = new PIXI.Sprite(scoreBgTexture);
@@ -33,17 +33,21 @@ class GameContainer extends PIXI.Container {
         this.items.push(item);
     }
 
-    intervalSpawnItems(interval) {
+    checkSpawnNewItem(delta) {
+        this.spawnTime += delta;
+        if (this.spawnTime < this.currentSpawnInterval) return;
         this.spawnNewItem();
-        this.timeout = setTimeout(
-            this.intervalSpawnItems.bind(this),
-            interval,
-            Math.max(interval - this.startIntervalStep, 50)
+        this.spawnTime = 0;
+        this.currentSpawnInterval = Math.max(
+            this.currentSpawnInterval - this.startIntervalStep,
+            50
         );
         this.startIntervalStep -= this.startIntervalStep / 50;
     }
 
     update(delta) {
+        this.checkSpawnNewItem((delta / 60) * 1000);
+
         this.items.forEach((item, index) => {
             item.update(delta);
             if (item.y > app.screen.height / app.stage.scale.y - 64) {
@@ -65,7 +69,6 @@ class GameContainer extends PIXI.Container {
     }
 
     destroy() {
-        clearTimeout(this.timeout);
         this.items = [];
     }
 }
