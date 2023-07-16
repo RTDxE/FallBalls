@@ -15,10 +15,13 @@ class GameContainer extends PIXI.Container {
 
         this.score = 0;
         this.scoreBg = new PIXI.Sprite(scoreBgTexture);
-        this.scoreBg.y = 0;
+        this.scoreBg.x = 8;
+        this.scoreBg.y = 8;
         this.addChild(this.scoreBg);
         this.scoreText = new PIXI.Text("Score: 0", fontStyle.default);
-        this.scoreText.anchor.set(-0.25);
+        this.scoreText.anchor.set(0.5);
+        this.scoreText.x = this.scoreBg.width / 2
+        this.scoreText.y = this.scoreBg.height / 2
         this.scoreBg.addChild(this.scoreText);
     }
 
