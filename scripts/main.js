@@ -44,7 +44,8 @@ loadBundles().then(() => {
 document.addEventListener("keydown", onKeyDown);
 
 function onKeyDown(event) {
-    if (event.code == "KeyZ") {
+    if (event.repeat) return;
+    if (event.code == "KeyZ" || event.code == "KeyX") {
         if (currentObj.currentObject != null) {
             console.log("asas");
             currentObj.currentObject.emit("pointerdown");
@@ -86,6 +87,8 @@ app.ticker.add((delta) => {
 
 app.stage.goMainMenu = function () {
     app.stage.removeChild(state);
+    currentObj.currentObject = null;
+
     state = new MainMenuContainer();
     setTimeout(() => {
         app.stage.addChild(state);
@@ -94,6 +97,8 @@ app.stage.goMainMenu = function () {
 
 app.stage.startGame = function () {
     app.stage.removeChild(state);
+    currentObj.currentObject = null;
+
     state = new GameContainer();
     app.stage.addChild(state);
 };
@@ -101,6 +106,8 @@ app.stage.startGame = function () {
 app.stage.gameOver = function (item, score) {
     app.stage.removeChild(state);
     state.destroy();
+    currentObj.currentObject = null;
+    
     state = new GameOverContainer(score);
     setTimeout(() => {
         app.stage.addChild(state);
