@@ -23,7 +23,12 @@ class GameContainer extends PIXI.Container {
     }
 
     spawnNewItem() {
-        let item = new FallingItem();
+        let item = null;
+        if (getRandomArbitrary(0, 1) < 0.1) {
+            item = new DoubleFallingItem();
+        } else {
+            item = new FallingItem();
+        }
         this.addChild(item);
         this.items.push(item);
     }
@@ -45,7 +50,7 @@ class GameContainer extends PIXI.Container {
                 app.stage.gameOver(item, this.score);
                 return;
             } else if (item.clicked) {
-                if (item.doubler) {
+                if (item instanceof DoubleFallingItem) {
                     item.createDouble().forEach((itemD) => {
                         this.addChild(itemD);
                         this.items.push(itemD);
