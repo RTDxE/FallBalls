@@ -2,6 +2,8 @@ class GameOverContainer extends PIXI.Container {
     constructor(score = 0) {
         super();
 
+        bridge.advertisement.showInterstitial();
+
         let authorizationOptions = {
             yandex: {
                 scopes: true,
@@ -78,13 +80,27 @@ class GameOverContainer extends PIXI.Container {
         this.restartButton = new Button(translate('button.restart'), "good");
         this.restartButton.y = 210;
         this.restartButton.x = 150;
-        this.restartButton.on("pointerdown", app.stage.startGame);
+        this.restartButton.on("pointerdown", () => {
+            if (
+                bridge.advertisement.interstitialState != "loading" ||
+                bridge.advertisement.interstitialState != "opened"
+            ) {
+                app.stage.startGame();
+            }
+        });
         this.menu.addChild(this.restartButton);
 
         this.goMenuButton = new Button(translate('button.menu'));
         this.goMenuButton.y = 210;
         this.goMenuButton.x = -150;
-        this.goMenuButton.on("pointerdown", app.stage.goMainMenu);
+        this.goMenuButton.on("pointerdown", () => {
+            if (
+                bridge.advertisement.interstitialState != "loading" ||
+                bridge.advertisement.interstitialState != "opened"
+            ) {
+                app.stage.goMainMenu();
+            }
+        });
         this.menu.addChild(this.goMenuButton);
     }
 

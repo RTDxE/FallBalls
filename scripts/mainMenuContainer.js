@@ -13,13 +13,20 @@ class MainMenuContainer extends PIXI.Container {
         this.logo.anchor.set(0.5);
         this.menu.addChild(this.logo);
 
-        this.startButton = new Button(translate('button.start'));
+        this.startButton = new Button(translate("button.start"));
         this.startButton.y = 200;
-        this.startButton.on("pointerdown", app.stage.startGame);
+        this.startButton.on("pointerdown", () => {
+            if (
+                bridge.advertisement.interstitialState != "loading" ||
+                bridge.advertisement.interstitialState != "opened"
+            ) {
+                app.stage.startGame();
+            }
+        });
         this.menu.addChild(this.startButton);
     }
 
-    update(delta) { }
+    update(delta) {}
 
     resize() {
         this.menu.x = app.screen.width / app.stage.scale.x / 2;
