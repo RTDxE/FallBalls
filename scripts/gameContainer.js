@@ -18,7 +18,7 @@ class GameContainer extends PIXI.Container {
         this.scoreBg.x = 8;
         this.scoreBg.y = 8;
         this.addChild(this.scoreBg);
-        this.scoreText = new PIXI.Text("Score: 0", fontStyle.default);
+        this.scoreText = new PIXI.Text(translate('label.score', {count : this.score}), fontStyle.default);
         this.scoreText.anchor.set(0.5);
         this.scoreText.x = this.scoreBg.width / 2
         this.scoreText.y = this.scoreBg.height / 2
@@ -88,7 +88,7 @@ class GameContainer extends PIXI.Container {
                 this.items.splice(index, 1);
                 this.removeChild(item);
                 this.score += 1;
-                this.scoreText.text = `Score: ${this.score}`;
+                this.scoreText.text = translate('label.score', {count : this.score});
             }
         });
     }

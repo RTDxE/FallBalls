@@ -50,38 +50,38 @@ class GameOverContainer extends PIXI.Container {
         this.popup.anchor.set(0.5);
         this.menu.addChild(this.popup);
 
-        this.logo = new PIXI.Text("Game Over", fontStyle.title);
+        this.logo = new PIXI.Text(translate('title.gameOver'), fontStyle.title);
         this.logo.y = -120;
         this.logo.anchor.set(0.5);
         this.menu.addChild(this.logo);
 
         this.recordScore = new PIXI.Text(
-            `Record: ${storageData.arcadeRecord}`,
+            translate('label.record', {count : storageData.arcadeRecord}),
             fontStyle.sub
         );
         this.recordScore.y = 20;
         this.recordScore.anchor.set(0.5);
         this.menu.addChild(this.recordScore);
 
-        this.score = new PIXI.Text(`Score: ${score}`, fontStyle.sub);
+        this.score = new PIXI.Text(translate('label.score', {count : score}), fontStyle.sub);
         this.score.y = 100;
         this.score.anchor.set(0.5);
         this.menu.addChild(this.score);
 
         if (this.newRecord) {
-            this.newRecordText = new PIXI.Text("New Record!", fontStyle.record);
+            this.newRecordText = new PIXI.Text(translate('label.newRecord'), fontStyle.record);
             this.newRecordText.y = -50;
             this.newRecordText.anchor.set(0.5);
             this.menu.addChild(this.newRecordText);
         }
 
-        this.restartButton = new Button("Restart", "good");
+        this.restartButton = new Button(translate('button.restart'), "good");
         this.restartButton.y = 210;
         this.restartButton.x = 150;
         this.restartButton.on("pointerdown", app.stage.startGame);
         this.menu.addChild(this.restartButton);
 
-        this.goMenuButton = new Button("Menu");
+        this.goMenuButton = new Button(translate('button.menu'));
         this.goMenuButton.y = 210;
         this.goMenuButton.x = -150;
         this.goMenuButton.on("pointerdown", app.stage.goMainMenu);

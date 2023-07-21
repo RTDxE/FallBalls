@@ -9,6 +9,7 @@
         <title>FallBalls</title>
         <link href="style/style.css" rel="stylesheet" />
         <script src="lib/instant-games-bridge.js"></script>
+        <script src="lib/translate.min.js"></script>
         <script src="lib/pixi.js"></script>
         <script src="lib/pixi-filters.js"></script>
     </head>
@@ -18,10 +19,16 @@
         <script>
             bridge
                 .initialize()
-                .then(() => {console.log("Language: " + bridge.platform.language);})
+                .then(() => {
+                    console.log("Language: " + bridge.platform.language);
+                    translate.setLocale(bridge.platform.language);
+                })
                 .catch((error) => {});
         </script>
 
+        <script src="translations/en.js"></script>
+        <script src="translations/ru.js"></script>
+        <script src="translations/tr.js"></script>
         <script src="scripts/fontLoader.js"></script>
         <script src="scripts/utils.js"></script>
         <script src="scripts/button.js"></script>
