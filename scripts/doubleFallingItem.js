@@ -3,6 +3,8 @@ class DoubleFallingItem extends FallingItem {
         super();
 
         this.rotationSpeed = 0.1;
+
+        this.filters = [new PIXI.filters.OutlineFilter(5, 0xff4d00)];
     }
 
     createDouble() {

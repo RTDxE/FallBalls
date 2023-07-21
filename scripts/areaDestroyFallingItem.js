@@ -2,6 +2,8 @@ class AreaDestroyFallingItem extends FallingItem {
     constructor() {
         super();
 
+        this.filters = [new PIXI.filters.OutlineFilter(5, 0x00ff88)];
+
         this.distance = 512;
 
         this.areaSprite = new PIXI.Sprite(new PIXI.Texture(bundles.misc.area));
