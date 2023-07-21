@@ -93,6 +93,8 @@ class GameContainer extends PIXI.Container {
         });
     }
 
+    resize() {}
+
     destroy() {
         this.items = [];
     }

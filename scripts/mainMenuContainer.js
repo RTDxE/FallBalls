@@ -19,7 +19,9 @@ class MainMenuContainer extends PIXI.Container {
         this.menu.addChild(this.startButton);
     }
 
-    update(delta) {
+    update(delta) { }
+
+    resize() {
         this.menu.x = app.screen.width / app.stage.scale.x / 2;
         this.menu.y = app.screen.height / app.stage.scale.y / 2;
     }

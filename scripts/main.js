@@ -16,7 +16,13 @@ bundles = { background: null, ui: null, items: [] };
 activeBundle = { background: "default", items: 0 };
 async function loadBundles() {
     await PIXI.Assets.init({ manifest: "./assets/manifest.json" });
-    PIXI.Assets.backgroundLoadBundle(["background", "ui", "defaultItems", "fonts", "misc"]);
+    PIXI.Assets.backgroundLoadBundle([
+        "background",
+        "ui",
+        "defaultItems",
+        "fonts",
+        "misc",
+    ]);
     bundles.background = await PIXI.Assets.loadBundle("background");
     bundles.ui = await PIXI.Assets.loadBundle("ui");
     bundles.items.push(await PIXI.Assets.loadBundle("defaultItems"));
@@ -24,6 +30,10 @@ async function loadBundles() {
     bundles.misc = await PIXI.Assets.loadBundle("misc");
 }
 let state = null;
+
+let storageData = {};
+storageData.arcadeRecord = 0;
+
 loadBundles().then(() => {
     this.background = PIXI.Sprite.from(
         bundles.background[activeBundle.background]
@@ -38,6 +48,9 @@ loadBundles().then(() => {
     state = new MainMenuContainer();
     app.stage.addChild(state);
     resize();
+
+    if (bridge.platform.id == "yandex")
+        bridge.platform.sendMessage("game_ready");
 });
 
 // Добавление события на нажатие клавиши
@@ -91,6 +104,7 @@ app.stage.goMainMenu = function () {
     state = new MainMenuContainer();
     setTimeout(() => {
         app.stage.addChild(state);
+        state.resize();
     }, 1);
 };
 
@@ -99,19 +113,22 @@ app.stage.startGame = function () {
     currentObj.currentObject = null;
 
     state = new GameContainer();
-    app.stage.addChild(state);
+    setTimeout(() => {
+        app.stage.addChild(state);
+        state.resize();
+    }, 1);
 };
 
 app.stage.gameOver = function (item, score) {
     app.stage.removeChild(state);
     state.destroy();
     currentObj.currentObject = null;
-    
+
     state = new GameOverContainer(score);
     setTimeout(() => {
         app.stage.addChild(state);
-
         app.stage.addChild(item);
+        state.resize();
     }, 1);
     setTimeout(() => {
         failItem = item;
@@ -142,6 +159,9 @@ function resize() {
 
     this.background.x = app.screen.width / app.stage.scale.x / 2;
     this.background.y = app.screen.height / app.stage.scale.y / 2;
+
+    if (state == null) return;
+    state.resize();
 }
 
 // Вызовите функцию изменения размера приложения при загрузке страницы и изменении размеров окна браузера

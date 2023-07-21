@@ -17,4 +17,10 @@ var fontStyle = {
         fill: "black",
         align: "center",
     },
+    record: {
+        fontFamily: "Neucha Regular",
+        fontSize: 50,
+        fill: "orange",
+        align: "center",
+    },
 };
