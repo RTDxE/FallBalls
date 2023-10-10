@@ -22,6 +22,24 @@
                 .then(() => {
                     console.log("Language: " + bridge.platform.language);
                     translate.setLocale(bridge.platform.language);
+
+                    let delayOptions = {
+                        vk: 60,
+                        yandex: 180,
+                        crazy_games: 60,
+                        absolute_games: 60,
+                        game_distribution: 60,
+                        mock: 0,
+                    };
+
+                    bridge.advertisement.setMinimumDelayBetweenInterstitial(
+                        delayOptions
+                    );
+
+                    let interstitialOptions = {
+                        ignoreDelay: true, // По умолчанию = false
+                    };
+                    bridge.advertisement.showInterstitial(interstitialOptions);
                 })
                 .catch((error) => {});
         </script>
